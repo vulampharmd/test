@@ -771,7 +771,29 @@ function addMyLocationButton() {
         currentLocation.style.backgroundPosition = '0px 0px';
         locationMarker.setOptions({'opacity': 0.5});
     });
-}
+}    var myloc;
+    function showLoc(){
+        if (!myloc){
+            myloc = new google.maps.Marker({
+                clickable: false,
+                icon: new google.maps.MarkerImage('//maps.gstatic.com/mapfiles/mobile/mobileimgs2.png',
+                                                                new google.maps.Size(22,22),
+                                                                new google.maps.Point(0,18),
+                                                                new google.maps.Point(11,11)),
+                shadow: null,
+                zIndex: 999,
+                map: map
+            });
+            console.log("inited marker")
+        }
+        if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos) {
+            var me = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+            myloc.setPosition(me);
+        }, function(error) {
+            console.log("cannot determine location")
+        });
+    }
+    setInterval(showLoc, 5000)
 
 function changeLocation(lat, lng) {
     var loc = new google.maps.LatLng(lat, lng);
